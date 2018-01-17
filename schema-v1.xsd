@@ -40,6 +40,7 @@
   <xsd:attribute name="name" type="xsd:string" />
   <xsd:attribute name="size" type="tns:size_t" />
   <xsd:attribute name="hash" type="tns:filehash_t" />
+  <xsd:attribute name="version" type="xsd:string" />
   <xsd:anyAttribute namespace="##other" processContents="lax" />
  </xsd:complexType>
 
@@ -52,6 +53,7 @@
   </xsd:sequence>
   <xsd:attribute name="name" type="xsd:string" />
   <xsd:attribute name="hash" type="tns:treehash_t" />
+  <xsd:attribute name="version" type="xsd:string" />
   <xsd:anyAttribute namespace="##other" processContents="lax" />
  </xsd:complexType>
 
@@ -62,6 +64,7 @@
     <xsd:element name="contents" type="tns:tree_t" />
    </xsd:choice>
   </xsd:sequence>
+  <xsd:attribute name="version" type="xsd:string" />
  </xsd:complexType>
 
 </xsd:schema>
