@@ -22,8 +22,7 @@ An W3C XML Schema to address [this question](https://datascience.stackexchange.c
 </dataset>
 ```
 
-XSD: [schema-v1.xsd](schema-v1.xsd)
+Resources:
 
-Notes:
-
-- git-sha1 file and tree hashes are computed exactly like git
+- [The schema](schema-v1.xsd) which can be inspected for more information.
+- [The tool](dsdir.py) that can create and validate files
