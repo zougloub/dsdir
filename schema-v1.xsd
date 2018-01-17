@@ -8,9 +8,27 @@
 
  <xsd:element name="dataset" type="tns:dataset_t"/>
 
- <xsd:simpleType name="hash_t">
+ <!-- May also use contents inside foreign XML !-->
+ <xsd:element name="contents" type="tns:tree_t"/>
+
+ <xsd:simpleType name="filehash_t">
+  <!--
+   Supported hashes:
+   - {sha1,md5} which are as computed by the respective *sum hashes;
+   - git-sha1 is computed exactly like git does.
+  !-->
   <xsd:restriction base="xsd:string">
-   <xsd:pattern value="(sha1:[0-9a-z]{40})?" />
+   <xsd:pattern value="((git-sha1:[0-9a-z]{40})|(sha1:[0-9a-z]{40}))( (git-sha1:[0-9a-z]{40})|(sha1:[0-9a-z]{40}))*" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="treehash_t">
+  <!--
+   For now, only git-sha1 is supported.
+   It consists in computing tree hashes exactly like git does.
+  !-->
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="(git-sha1:[0-9a-z]{40})" />
   </xsd:restriction>
  </xsd:simpleType>
 
@@ -21,24 +39,28 @@
  <xsd:complexType name="file_t">
   <xsd:attribute name="name" type="xsd:string" />
   <xsd:attribute name="size" type="tns:size_t" />
-  <xsd:attribute name="hash" type="tns:hash_t" />
+  <xsd:attribute name="hash" type="tns:filehash_t" />
   <xsd:anyAttribute namespace="##other" processContents="lax" />
  </xsd:complexType>
 
  <xsd:complexType name="tree_t">
   <xsd:sequence>
-   <xsd:element name="file" type="tns:file_t" minOccurs="0" maxOccurs="unbounded" />
-   <xsd:element name="folder" type="tns:tree_t" minOccurs="0" maxOccurs="unbounded" />
+   <xsd:choice maxOccurs="unbounded" minOccurs="0">
+    <xsd:element name="file" type="tns:file_t" />
+    <xsd:element name="folder" type="tns:tree_t" />
+   </xsd:choice>
   </xsd:sequence>
   <xsd:attribute name="name" type="xsd:string" />
-  <xsd:attribute name="hash" type="tns:hash_t" />
+  <xsd:attribute name="hash" type="tns:treehash_t" />
   <xsd:anyAttribute namespace="##other" processContents="lax" />
  </xsd:complexType>
 
  <xsd:complexType name="dataset_t">
   <xsd:sequence>
-   <xsd:any minOccurs="0" namespace="##other" processContents="lax" />
-   <xsd:element name="contents" type="tns:tree_t" />
+   <xsd:choice maxOccurs="unbounded" minOccurs="0">
+    <xsd:any namespace="##other" processContents="lax" />
+    <xsd:element name="contents" type="tns:tree_t" />
+   </xsd:choice>
   </xsd:sequence>
  </xsd:complexType>
 
