@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:tns="http://zougloub.github.io/dsdir/v1"
+ targetNamespace="http://zougloub.github.io/dsdir/v1"
+ elementFormDefault="qualified"
+ >
+
+ <xsd:element name="dataset" type="tns:dataset_t"/>
+
+ <xsd:simpleType name="hash_t">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="(sha1:[0-9a-z]{40})?" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="size_t">
+  <xsd:restriction base="xsd:decimal" />
+ </xsd:simpleType>
+
+ <xsd:complexType name="file_t">
+  <xsd:attribute name="name" type="xsd:string" />
+  <xsd:attribute name="size" type="tns:size_t" />
+  <xsd:attribute name="hash" type="tns:hash_t" />
+ </xsd:complexType>
+
+ <xsd:complexType name="tree_t">
+  <xsd:sequence>
+   <xsd:element name="file" type="tns:file_t" minOccurs="0" maxOccurs="unbounded" />
+   <xsd:element name="folder" type="tns:tree_t" minOccurs="0" maxOccurs="unbounded" />
+  </xsd:sequence>
+  <xsd:attribute name="name" type="xsd:string" />
+  <xsd:attribute name="hash" type="tns:hash_t" />
+ </xsd:complexType>
+
+ <xsd:complexType name="dataset_t">
+  <xsd:sequence>
+   <xsd:element name="contents" type="tns:tree_t" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+</xsd:schema>
