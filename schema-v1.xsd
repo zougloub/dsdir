@@ -22,6 +22,7 @@
   <xsd:attribute name="name" type="xsd:string" />
   <xsd:attribute name="size" type="tns:size_t" />
   <xsd:attribute name="hash" type="tns:hash_t" />
+  <xsd:anyAttribute namespace="##other" processContents="lax" />
  </xsd:complexType>
 
  <xsd:complexType name="tree_t">
@@ -31,10 +32,12 @@
   </xsd:sequence>
   <xsd:attribute name="name" type="xsd:string" />
   <xsd:attribute name="hash" type="tns:hash_t" />
+  <xsd:anyAttribute namespace="##other" processContents="lax" />
  </xsd:complexType>
 
  <xsd:complexType name="dataset_t">
   <xsd:sequence>
+   <xsd:any minOccurs="0" namespace="##other" processContents="lax" />
    <xsd:element name="contents" type="tns:tree_t" />
   </xsd:sequence>
  </xsd:complexType>
