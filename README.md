@@ -23,3 +23,8 @@ An W3C XML Schema to address [this question](https://datascience.stackexchange.c
 ```
 
 XSD: [schema-v1.xsd](schema-v1.xsd)
+
+Notes:
+
+- sha1 file and tree hashes are computed exactly like git
+
