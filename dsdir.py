@@ -68,7 +68,6 @@ def dsdir_create_folder(path, root):
 	"""
 	"""
 	elt = lxml.etree.Element("{%s}folder" % NS, nsmap=namespaces)
-	elt.attrib[NAME] = os.path.basename(path)
 
 	ret = list()
 	for k, v in sorted(root.items()):
@@ -95,6 +94,7 @@ def dsdir_create_folder(path, root):
 	h.update(s)
 	hval = h.hexdigest()
 	elt.attrib[HASH] =  "%s:%s" % (htype, hval)
+	elt.attrib[NAME] = os.path.basename(path)
 	return elt
 
 
