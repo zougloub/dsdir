@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='ASCII'?>
+<dataset xmlns="http://zougloub.github.io/dsdir/v1">
+  <contents hash="git-sha1:8341d5cfbe4acd98a89ab9b1d04af6effbb1d391">
+    <file hash="git-sha1:60e4c5fe34ee958177e7f087fa82ca77ac6e2314" name="LICENSE"/>
+    <file hash="git-sha1:0567d9024879cffb60becc9b0d8d4d5cf37afd5a" name="README.md"/>
+    <file hash="git-sha1:b89a89351712c7c313d8b3f3e2e60ddeecc2cc82" name="dsdir.py"/>
+    <file hash="git-sha1:7a041f29954fd00506a3fa41d9a69b144caa87a8" name="schema-v1.xsd"/>
+  </contents>
+</dataset>
+
