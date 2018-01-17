@@ -22,7 +22,15 @@ An W3C XML Schema to address [this question](https://datascience.stackexchange.c
 </dataset>
 ```
 
-Resources:
+Provided resources:
 
-- [The schema](schema-v1.xsd) which can be inspected for more information.
-- [The tool](dsdir.py) that can create and validate files
+- W3C XML Schema `schema-v1.xsd`, which can be inspected for more information;
+- Python tool/module `dsdir.py` that can create and validate records.
+
+Considerations:
+
+- When performing integrity testing, any stated information is validated;
+- Hashes are optional;
+- SHA1 file hashes;
+- `git-sha1` file and tree hashes, using a SHA1-based hash as computed by git.
+
