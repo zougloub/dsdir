@@ -333,24 +333,26 @@ class Validator(object):
 
 		return errors
 
-	def validate(self, f):
-
-		schema_file = os.path.join(os.path.dirname(__file__), "schema-v1.xsd")
-		with io.open(schema_file, "rb") as f_s:
-			xmlschema_doc = lxml.etree.parse(f_s)
-		xmlschema = lxml.etree.XMLSchema(xmlschema_doc)
+	def validate(self, f, validate_schema=True):
 
 		errors = list()
 
 		doc = lxml.etree.parse(f)
-		res = xmlschema.validate(doc)
-		if not res:
-			self._log.error("Invalid XML")
-			for x in xmlschema.error_log:
-				self._log.error(x)
 
-		if errors:
-			return errors
+		if validate_schema:
+			schema_file = os.path.join(os.path.dirname(__file__), "schema-v1.xsd")
+			with io.open(schema_file, "rb") as f_s:
+				xmlschema_doc = lxml.etree.parse(f_s)
+			xmlschema = lxml.etree.XMLSchema(xmlschema_doc)
+
+			res = xmlschema.validate(doc)
+			if not res:
+				self._log.error("Invalid XML")
+				for x in xmlschema.error_log:
+					self._log.error(x)
+
+			if errors:
+				return errors
 
 		global ns
 		if ns != "dsdir":
@@ -443,6 +445,11 @@ if __name__ == "__main__":
 	 help="validate a dsdir",
 	)
 
+	subp.add_argument(
+	 "--validate-schema",
+	 action="store_true",
+	)
+
 	subp.add_argument("filename",
 	 nargs="?",
 	)
@@ -472,7 +479,7 @@ if __name__ == "__main__":
 		else:
 			f = io.open(args.filename, "rb")
 		validator = Validator()
-		errors = validator.validate(f)
+		errors = validator.validate(f, validate_schema=args.validate_schema)
 		if errors:
 			sys.stderr.write("Verification errors:\n")
 			for error in errors:
