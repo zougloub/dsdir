@@ -26,5 +26,4 @@ XSD: [schema-v1.xsd](schema-v1.xsd)
 
 Notes:
 
-- sha1 file and tree hashes are computed exactly like git
-
+- git-sha1 file and tree hashes are computed exactly like git

@@ -22,8 +22,11 @@ NAME = "name" # "{%s}name" % NS
 
 def dsdir_create_file(parent, filename):
 	path = os.path.join(parent, filename)
+
 	htype = "sha1"
 	h = getattr(hashlib, htype)()
+
+	htype = "git-sha1"
 	h.update(("blob %d" % os.path.getsize(path)).encode() + b"\0")
 
 	with io.open(path, "rb") as f:
@@ -72,14 +75,14 @@ def dsdir_create_folder(path, root):
 		if v is None:
 			res = dsdir_create_file(path, k)
 			elt.append(res)
-			h = codecs.decode(res.attrib[HASH][5:], "hex")
+			h = codecs.decode(res.attrib[HASH].split(":")[1], "hex")
 			n = res.attrib[NAME].encode("utf-8")
 			ret.append(b"100644 %s\0%s" % (n, h))
 		else:
 			path_ = os.path.join(path, k)
 			res = dsdir_create_folder(path_, v)
 			elt.append(res)
-			h = codecs.decode(res.attrib[HASH][5:], "hex")
+			h = codecs.decode(res.attrib[HASH].split(":")[1], "hex")
 			n = res.attrib[NAME].encode("utf-8")
 			ret.append(b"040000 %s\0%s" % (n, h))
 
@@ -87,6 +90,7 @@ def dsdir_create_folder(path, root):
 
 	htype = "sha1"
 	h = getattr(hashlib, htype)()
+	htype = "git-sha1"
 	h.update(("tree %d\0" % len(s)).encode("utf-8"))
 	h.update(s)
 	hval = h.hexdigest()
