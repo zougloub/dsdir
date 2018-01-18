@@ -142,7 +142,7 @@ def h_tree(node, hnames, key_prefix=""):
 			n = name if sys.hexversion < 0x03000000 else name.encode("utf-8")
 			h = codecs.decode(sub[key_prefix + "git-sha1"], "hex")
 			if sub["type"] == "folder":
-				git_sha1_data.append(b"040000 %s\0%s" % (n, h))
+				git_sha1_data.append(b"40000 %s\0%s" % (n, h))
 			else:
 				git_sha1_data.append(b"100644 %s\0%s" % (n, h))
 
