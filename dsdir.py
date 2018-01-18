@@ -436,8 +436,13 @@ if __name__ == "__main__":
 	 help="create a dsdir",
 	)
 
+	subp.add_argument(
+	 "--exclude",
+	 action="append",
+	)
+
 	subp.add_argument("files",
-	 nargs="*",
+	 nargs="+",
 	)
 
 	subp = subparsers.add_parser(
@@ -468,7 +473,20 @@ if __name__ == "__main__":
 
 	if args.command == "create":
 		creator = Creator()
-		root = creator.create(args.files)
+		files = set()
+		for path in args.files:
+			if args.exclude and path in args.exclude:
+				continue
+			if path == ".":
+				for path in os.listdir("."):
+					if path in (".", ".."):
+						continue
+					if args.exclude and path in args.exclude:
+						continue
+					files.add(path)
+				continue
+			files.add(path)
+		root = creator.create(files)
 		print(lxml.etree.tostring(root,
 		 pretty_print=True,
 		 xml_declaration=True,
