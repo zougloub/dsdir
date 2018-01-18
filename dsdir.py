@@ -221,7 +221,8 @@ class Creator(object):
 					hval = content[htype]
 					hashes.append("%s:%s" % (htype, hval))
 
-				sub.attrib["hash"] = " ".join(hashes)
+				if hashes:
+					sub.attrib["hash"] = " ".join(hashes)
 
 				name = content["name"]
 				n = name.decode("utf-8") if sys.hexversion < 0x03000000 else name
@@ -232,7 +233,8 @@ class Creator(object):
 		for htype in self._hash_dirs:
 			hval = tree[htype]
 			hashes.append("%s:%s" % (htype, hval))
-			elt.attrib["hash"] = " ".join(hashes)
+			if hashes:
+				elt.attrib["hash"] = " ".join(hashes)
 
 		if not is_root:
 			elt.attrib["name"] = tree["name"]
@@ -444,6 +446,23 @@ if __name__ == "__main__":
 	 default=list(),
 	)
 
+	def csl(x):
+		if x == "":
+			return []
+		return x.split(",")
+
+	subp.add_argument(
+	 "--hash-files",
+	 type=csl,
+	 default=["sha1"],
+	)
+
+	subp.add_argument(
+	 "--hash-trees",
+	 type=csl,
+	 default=["git-sha1"],
+	)
+
 	subp.add_argument(
 	 "--output",
 	 type=argparse.FileType('wb'),
@@ -482,7 +501,7 @@ if __name__ == "__main__":
 		logging.basicConfig(level=logging.INFO)
 
 	if args.command == "create":
-		creator = Creator()
+		creator = Creator(hash_files=args.hash_files, hash_dirs=args.hash_trees)
 		files = set()
 		exclusions = set(args.exclude)
 
