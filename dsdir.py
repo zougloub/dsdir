@@ -441,6 +441,7 @@ if __name__ == "__main__":
 	subp.add_argument(
 	 "--exclude",
 	 action="append",
+	 default=list(),
 	)
 
 	subp.add_argument(
@@ -483,14 +484,19 @@ if __name__ == "__main__":
 	if args.command == "create":
 		creator = Creator()
 		files = set()
+		exclusions = set(args.exclude)
+
+		if args.output != parser.get_default("output"):
+			exclusions.add(args.output.name)
+
 		for path in args.files:
-			if args.exclude and path in args.exclude:
+			if path in exclusions:
 				continue
 			if path == ".":
 				for path in os.listdir("."):
 					if path in (".", ".."):
 						continue
-					if args.exclude and path in args.exclude:
+					if path in exclusions:
 						continue
 					files.add(path)
 				continue
