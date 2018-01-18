@@ -138,14 +138,13 @@ def h_tree(node, hnames, key_prefix=""):
 		git_sha1_data = list()
 
 		for idx_sub, sub in enumerate(node["contents"]):
+			name = sub["name"]
+			n = name if sys.hexversion < 0x03000000 else name.encode("utf-8")
+			h = codecs.decode(sub[key_prefix + "git-sha1"], "hex")
 			if sub["type"] == "folder":
-				h = codecs.decode(sub[key_prefix + "git-sha1"], "hex")
-				n = sub["name"].encode("utf-8")
-				git_sha1_data.append(b"100644 %s\0%s" % (n, h))
-			else:
-				h = codecs.decode(sub[key_prefix + "git-sha1"], "hex")
-				n = sub["name"].encode("utf-8")
 				git_sha1_data.append(b"040000 %s\0%s" % (n, h))
+			else:
+				git_sha1_data.append(b"100644 %s\0%s" % (n, h))
 
 		s = b"".join(git_sha1_data)
 		h = hashlib.sha1()
@@ -223,7 +222,10 @@ class Creator(object):
 					hashes.append("%s:%s" % (htype, hval))
 
 				sub.attrib["hash"] = " ".join(hashes)
-				sub.attrib["name"] = content["name"]
+
+				name = content["name"]
+				n = name.decode("utf-8") if sys.hexversion < 0x03000000 else name
+				sub.attrib["name"] = n
 				elt.append(sub)
 
 		hashes = []
