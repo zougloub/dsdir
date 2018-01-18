@@ -441,6 +441,13 @@ if __name__ == "__main__":
 	 action="append",
 	)
 
+	subp.add_argument(
+	 "--output",
+	 type=argparse.FileType('wb'),
+	 default=sys.stdout.buffer if sys.hexversion >= 0x03000000 else sys.stdout,
+	)
+
+
 	subp.add_argument("files",
 	 nargs="+",
 	)
@@ -487,10 +494,17 @@ if __name__ == "__main__":
 				continue
 			files.add(path)
 		root = creator.create(files)
-		print(lxml.etree.tostring(root,
+
+		b = lxml.etree.tostring(root,
+		 encoding="utf-8",
 		 pretty_print=True,
 		 xml_declaration=True,
-		))
+		)
+
+		f = args.output
+		f.write(b)
+		f.flush()
+
 	elif args.command == "validate":
 		if args.filename is None:
 			f = sys.stdin.buffer
