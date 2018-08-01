@@ -55,7 +55,7 @@ def to_lxml(dsdir, tree, is_root=False):
 			for aname in ("size",):
 				aval = content.get(aname, None)
 				if aval is not None:
-					sub.attrib[aname] = aval
+					sub.attrib[aname] = str(aval)
 
 			hashes = []
 			for htype in set(list(dsdir._hash_files)):

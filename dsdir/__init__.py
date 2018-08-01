@@ -205,6 +205,7 @@ class DsDir(object):
 		out["type"] = "file"
 		out["name"] = filename
 		out["path"] = os.path.join(parent, filename)
+		out["size"] = os.path.getsize(out["path"])
 
 		h_file(out, set(list(self._hash_dirs) + list(self._hash_files)))
 
@@ -234,6 +235,7 @@ class DsDir(object):
 				contents.append(res)
 
 		h_tree(out, self._hash_dirs)
+		out["size"] = sum(x["size"] for x in contents)
 
 		return out
 
